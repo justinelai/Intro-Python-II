@@ -51,8 +51,7 @@ player = Player(val, room["outside"])
 
 # function to print current status
 def print_current(room):
-    print(f"You are standing in {room.name}.")
-    print(f"...{room.description}")
+    print(f"\n***** Your location is {room.name} *****\n\n{room.description}...\n")
 
 # start game
 print_current(player.current_room)
