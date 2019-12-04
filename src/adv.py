@@ -54,47 +54,29 @@ def print_current(room):
     print(f"You are standing in {room.name}.")
     print(f"...{room.description}")
 
+# start game
 print_current(player.current_room)
 gameover = False
 
-# if (use current_room name) has a x_to is not None
-# change value of player.current_room to room value of rooms.x_to  player.current_room = room
+# establish valid moves
+valid_moves = ["n", "s", "e", "w"]
 
 while gameover == False:
+    # prompt for input
     move = input("Enter a direction as n/s/e/w. (q to quit) ").lower()
-    if move == 'n':
-        if player.current_room.n_to:
-            player.current_room = player.current_room.n_to
+    # checks to see if move is valid and exists as an attribute.
+    if move in valid_moves:
+        move_attr = move+"_to"
+        validated = getattr(player.current_room, move_attr, None)
+        if validated:
+            player.current_room = validated
             print_current(player.current_room)
         else:
             print("That move is not permitted. Please try again.")
-            gameover = False
-    elif move == 's':
-        if player.current_room.s_to:
-            player.current_room = player.current_room.s_to
-            print_current(player.current_room)
-        else:
-            print("That move is not permitted. Please try again.")
-            gameover = False
-    elif move == 'e':
-        if player.current_room.e_to:
-            player.current_room = player.current_room.e_to
-            print_current(player.current_room)
-        else:
-            print("That move is not permitted. Please try again.")
-            gameover = False
-    elif move == 'w':
-        if player.current_room.w_to:
-            player.current_room = player.current_room.w_to
-            print_current(player.current_room)
-        else:
-            print("That move is not permitted. Please try again.")
-            gameover = False
     elif move == 'q':
         gameover = True
     else: 
         print("Invalid input. Please try again.")
-        gameover = False
         
 # End game
 print("The game has ended.")
