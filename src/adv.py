@@ -4,7 +4,6 @@ from player import Player
 from item import Item
 
 # Declare all the rooms
-
 room = {
     "outside": Room("Outside Cave Entrance", "North of you, the cave mount beckons"),
     "foyer": Room(
@@ -33,7 +32,6 @@ earlier adventurers. The only exit is to the south.""",
 
 
 # Link rooms together
-
 room["outside"].n_to = room["foyer"]
 room["foyer"].s_to = room["outside"]
 room["foyer"].n_to = room["overlook"]
@@ -44,13 +42,13 @@ room["narrow"].n_to = room["treasure"]
 room["treasure"].s_to = room["narrow"]
 
 # Create items
-
 items={
     "trinket": Item("Trinket", "Looks pretty."),
     "spoon": Item("Spoon", "Allows you to drink soup"),
     "pen": Item("Pen", "Writing tool. If only you had some paper...")
 }
 
+# Seed items
 room["outside"].holdings.append(items["spoon"])
 room["outside"].holdings.append(items["spoon"])
 room["outside"].holdings.append(items["pen"])
@@ -93,15 +91,21 @@ while gameover == False:
                 player.current_room.add_item(items[noun])
             #handle get
             elif verb == "take" or verb == "get":
+                # my special touch - only allows the user to have one of each item
                 if player.check_item(items[noun]) == False:
+                    # confirms the item is indeed inside the room
                     if player.current_room.remove_item(items[noun]) == True:
+                        # woohoo, actually add that item!
                         player.add_item(items[noun])
             else:
+                # this doesn't seem to be reachable because the user will always have a key error...
+                # ...and the class methods handle more specific errors 
                 print("Invalid input. Please try again.")
         except KeyError: 
+            #error for all words that aren't existing
             print("Don't know that one. Please try again.")
     else: 
-    # checks to see if 1 word input is a valid move
+        # checks to see if 1 word input is a valid move
         if verb in valid_moves:
             move_attr = move+"_to"
             validated = getattr(player.current_room, move_attr, None)
@@ -111,23 +115,13 @@ while gameover == False:
             else:
                 print("That move is not permitted. Please try again.")
         elif verb == 'i':
+        # check inventory
             print(f"Your inventory: {player.get_inventory()}")
         elif verb == 'q':
+        # quit game
             gameover = True
         else: 
+        # note that this would apply to drop/get/take inputted as single words - in case we want to return a more specific error
             print("Invalid input. Please try again.")
-# End game
+# Game ending
 print("The game has ended.")
-
-# Hold
-# working - print(player.get_inventory())
-"""
- for split[1] in items:
-                print("You can drop that!")
-            #items[split[1]]
-            #if player.remove_item(noun):
-            #    player.current_room.add_item(noun)
-            else:
-                pass
-            elif verb == "get" or "take":
-                """
